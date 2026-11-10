@@ -576,7 +576,7 @@ export default function Home() {
                 </td>
               </tr>
             ) : (
-              filteredLogs.main ? null : filteredLogs.map((log) => {
+              filteredLogs.map((log) => {
                 const isChecked = selectedIds.includes(log.id);
                 return (
                   <tr key={log.id} className={`hover:bg-slate-50 ${isChecked ? 'bg-indigo-50/50' : ''}`}>
