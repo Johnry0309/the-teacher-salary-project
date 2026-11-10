@@ -4,6 +4,8 @@ import { Printer, Plus, Trash2, Calendar, User, LogOut, Loader2, Zap, CheckCircl
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
+export const dynamic = 'force-dynamic'
+
 interface ClassLog {
   id: string;
   log_date: string;
