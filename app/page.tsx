@@ -1,13 +1,9 @@
-export const dynamic = 'force-dynamic'
 'use client';
-
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { Printer, Plus, Trash2, Calendar, User, LogOut, Loader2, Zap, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
-
-
 
 interface ClassLog {
   id: string;
@@ -23,6 +19,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [successMsg, setSuccessMsg] = useState('');
+  const [currentDate, setCurrentDate] = useState<string>('');
 
   // --- Teacher Profile State ---
   const [teacherName, setTeacherName] = useState('Teacher');
@@ -60,9 +57,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const today = new Date().toISOString().split('T')[0];
-    setLogDate(today);
-    setBulkDate(today);
+    const todayStr = new Date().toISOString().split('T')[0];
+    setCurrentDate(todayStr);
+    setLogDate(todayStr);
+    setBulkDate(todayStr);
   }, []);
 
   useEffect(() => {
@@ -228,8 +226,9 @@ export default function Home() {
   };
 
   const filteredLogs = useMemo(() => {
-    const now = new Date();
+    const now = currentDate ? new Date(currentDate) : new Date();
     return logs.filter((log) => {
+      if (!log.log_date) return false;
       const logDateObj = new Date(log.log_date);
 
       if (filterMode === 'this-week') {
@@ -263,7 +262,7 @@ export default function Home() {
 
       return true;
     });
-  }, [logs, filterMode, customStartDate, customEndDate]);
+  }, [logs, filterMode, customStartDate, customEndDate, currentDate]);
 
   const totalClasses = filteredLogs.length;
   const totalAuditedHours = totalClasses * 0.5;
@@ -577,7 +576,7 @@ export default function Home() {
                 </td>
               </tr>
             ) : (
-              filteredLogs.map((log) => {
+              filteredLogs.main ? null : filteredLogs.map((log) => {
                 const isChecked = selectedIds.includes(log.id);
                 return (
                   <tr key={log.id} className={`hover:bg-slate-50 ${isChecked ? 'bg-indigo-50/50' : ''}`}>
