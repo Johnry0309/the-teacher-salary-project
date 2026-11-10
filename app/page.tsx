@@ -226,7 +226,8 @@ export default function Home() {
   };
 
   const filteredLogs = useMemo(() => {
-    const now = currentDate ? new Date(currentDate) : new Date();
+    if (!currentDate) return [];
+    const now = new Date(currentDate);
     return logs.filter((log) => {
       if (!log.log_date) return false;
       const logDateObj = new Date(log.log_date);
@@ -263,7 +264,7 @@ export default function Home() {
       return true;
     });
   }, [logs, filterMode, customStartDate, customEndDate, currentDate]);
-
+  
   const totalClasses = filteredLogs.length;
   const totalAuditedHours = totalClasses * 0.5;
   const totalEarnings = filteredLogs.reduce((sum, log) => sum + Number(log.calculated_pay), 0);
