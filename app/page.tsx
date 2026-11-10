@@ -1,10 +1,12 @@
 'use client';
+export const dynamic = 'force-dynamic'
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { Printer, Plus, Trash2, Calendar, User, LogOut, Loader2, Zap, CheckCircle2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
-export const dynamic = 'force-dynamic'
+
 
 interface ClassLog {
   id: string;
