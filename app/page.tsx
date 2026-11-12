@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Printer, Plus, Trash2, Calendar, User, LogOut, Loader2, Zap, CheckCircle2 } from 'lucide-react';
+import { Printer, Plus, Trash2, Calendar, User, LogOut, Loader2, Zap, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface ClassLog {
   id: string;
@@ -20,6 +21,7 @@ export default function Home() {
   const [user, setUser] = useState<any>(null);
   const [successMsg, setSuccessMsg] = useState('');
   const [currentDate, setCurrentDate] = useState<string>('');
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // --- Teacher Profile State ---
   const [teacherName, setTeacherName] = useState('Teacher');
@@ -90,6 +92,10 @@ export default function Home() {
       setAccountType(profileData.account_type);
       setClassType(profileData.account_type);
       setBulkClassType(profileData.account_type);
+      
+      if (profileData.role === 'ADMIN') {
+        setIsAdmin(true);
+      }
     }
 
     const { data: logsData } = await supabase
@@ -287,6 +293,14 @@ export default function Home() {
             <p className="text-sm text-slate-500">Logged in as {user?.email}</p>
           </div>
           <div className="flex items-center gap-3">
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white px-3 py-2 rounded-lg font-medium shadow transition text-sm"
+              >
+                <ShieldCheck size={16} className="text-emerald-400" /> HR / Admin View
+              </Link>
+            )}
             <button
               onClick={() => window.print()}
               className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-medium shadow transition text-sm"
