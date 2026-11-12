@@ -92,7 +92,7 @@ export default function Home() {
       setAccountType(profileData.account_type);
       setClassType(profileData.account_type);
       setBulkClassType(profileData.account_type);
-      
+
       if (profileData.role === 'ADMIN') {
         setIsAdmin(true);
       }
